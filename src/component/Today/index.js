@@ -1,31 +1,22 @@
 import { useEffect, useState, useRef } from 'react'
-import { Input } from 'antd';
+import { Input } from 'antd'
+import { observer } from 'mobx-react'
 import { StockOutlined } from '@ant-design/icons'
 import { get } from '../../util/request'
 import { API_CITY_CODE, API_NOW, API_FORCAST, API_CITY_IMAGE } from '../../constant/urls'
 import { KEY, CLIENT_ID } from '../../constant/config'
+import { useCityStore } from '../../hooks/useStore'
 import './index.css'
 
 const { Search } = Input;
 
-const defaultValue = {
-    city: '杭州',
-    image: {
-        urls: {
-            small: 'https://images.unsplash.com/photo-1556811459-4dd84308172e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MXwxOTEyMTF8MHwxfHNlYXJjaHwxfHwlRTUlQkIlQkElRTclQUQlOTElRTYlOUQlQUQlRTUlQjclOUV8ZW58MHx8fA&ixlib=rb-1.2.1&q=80&w=400'
-        },
-        user: {
-            name: "远扩 王"
-        }
-    }
-}
-
 function Today() {
+    const cityStore = useCityStore()
     const cityInput = useRef(null)
-    const [city, setCity] = useState(defaultValue.city)
+    const [city, setCity] = useState(cityStore.currDefaultCity)
     const [nowData, setNowData] = useState(null)
     const [forcastData, setForcastData] = useState([])
-    const [cityView, setCityView] = useState(defaultValue.image)
+    const [cityView, setCityView] = useState('')
 
     const onSearch = (value) => {
         setCity(value);
@@ -59,13 +50,13 @@ function Today() {
     return (
         <div className="weather-today">
             <div className="city-view">
-                <img className="city-image" alt="city-view" src={cityView ? cityView.urls.small : ''} />
+                <img className="city-image" alt="city-view" src={cityView ? cityView.urls.small : 'https://unsplash.com/photos/3TG9vuGVl2s'} />
                 <div className="image-source">
-                    Photo by {cityView.user.name} on Unsplash
+                    Photo by {cityView ? cityView.user.name: '...'} on Unsplash
                 </div>
             </div>
             <div className="top-bar">
-                <Search defaultValue={defaultValue.city} ref={cityInput} onSearch={onSearch} enterButton />
+                <Search defaultValue={cityStore.currDefaultCity} ref={cityInput} onSearch={onSearch} enterButton />
             </div>
             <div className="today">
                 <div className="t-weather">
@@ -113,4 +104,4 @@ function Today() {
     )
 }
 
-export default Today;
+export default observer(Today);
