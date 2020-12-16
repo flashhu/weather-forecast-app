@@ -1,0 +1,11 @@
+.not-found {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.icon-404 {
+    height: 350px;
+}

@@ -1,0 +1,49 @@
+.login {
+    width: 100%;
+    height: 100vh;
+    background-size: cover;
+}
+
+.login-box {
+    position: relative;
+    top: 18%;
+    margin: auto;
+    background-color: rgba(255, 255, 255, .3);
+    border-radius: 4px;
+    width: 380px;
+    padding: 50px 30px 40px;
+    box-shadow: 0 0 8px rgba(0,0,0,.2);
+}
+
+.login-title {
+    margin: 0 auto;
+    width: 190px;
+    font-weight: bold;
+    text-align: center;
+    color: #444;
+    border-bottom: 1px solid #333;
+    padding-bottom: 5px;
+}
+
+.login-form {
+    width: 80%;
+    margin: 40px auto 0 auto;
+}
+
+.login-btn {
+    width: 100%;
+}
+
+.register-btn {
+    width: 100%;
+    margin-top: 16px;
+}
+
+.login-tip {
+    color: #777;
+    text-align: center;
+}
+
+.login-tip span {
+    padding: 0 10px;
+}

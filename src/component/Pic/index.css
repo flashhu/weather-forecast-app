@@ -1,0 +1,29 @@
+.weather-recommend {
+    position: relative;
+}
+
+.weather-recommend .hp_vidwrp {
+    width: 100%;
+    height: 200px;
+    background-size: cover;
+}
+
+.weather-recommend .hp-describ {
+    position: absolute;
+    top: 150px;
+    left: 10px;
+    color: #fff;
+}
+
+.weather-recommend .qr-wrapper {
+    display: flex;
+    font-size: 16px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.weather-recommend .recommend-title {
+    font-weight: bold;
+    font-size: 18px;
+    margin: 20px 0;
+}
