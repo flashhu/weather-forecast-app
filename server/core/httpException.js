@@ -52,12 +52,23 @@ class Forbbiden extends HttpException {
     }
 }
 
+// 记录已存在，后台不做处理
 class IgnoreOperation extends HttpException {
     constructor(msg, errorCode) {
         super()
-        this.code = 403
+        this.code = 400
         this.errorCode = errorCode || 10002
         this.msg = msg || '数据已存在'
+    }
+}
+
+// 记录已存在，操作异常
+class AccountExist extends HttpException {
+    constructor(msg, errorCode) {
+        super()
+        this.code = 400
+        this.errorCode = errorCode || 10008
+        this.msg = msg || '记录已存在'
     }
 }
 
@@ -68,5 +79,6 @@ module.exports = {
     NotFound,
     AuthFailed,
     Forbbiden,
-    IgnoreOperation
+    IgnoreOperation,
+    AccountExist
 }

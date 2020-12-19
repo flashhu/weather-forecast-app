@@ -115,7 +115,7 @@ class LinValidator {
             }
         }
         if (!result.pass) {
-            const msg = `${isCustomFunc ? '' : key}${result.msg}`
+            const msg = `${isCustomFunc ? '' : result.msg === '字段是必填参数' ? key: ''}${result.msg}`
             return {
                 msg: msg,
                 success: false

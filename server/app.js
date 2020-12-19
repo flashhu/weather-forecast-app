@@ -5,7 +5,7 @@ const InitManager = require('./core/init')
 const catchError = require('./middlewares/exception')
 
 const app = new Koa()
-const port = 8070
+const port = 8090
 
 app.use(cors())
 app.use(parser())
