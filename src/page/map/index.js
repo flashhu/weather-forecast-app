@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
 import { observer } from 'mobx-react'
-import { useCityStore } from '../../hooks/useStore'
+import { useUserStore } from '../../hooks/useStore'
 import './index.css'
 
 function Map() {
-    const cityStore = useCityStore()
+    const userStore = useUserStore()
 
     useEffect(()=>{
         var map = new AMap.Map('container', {
@@ -12,7 +12,7 @@ function Map() {
             zoom: 11 //初始化地图层级
         })
 
-        map.setCity(cityStore.currDefaultCity);
+        map.setCity(userStore.user ? userStore.user.default_city : '杭州');
         
         return ()=>{
             map.destroy();

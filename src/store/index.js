@@ -1,9 +1,9 @@
 import userStore from './User'
-import cityStore from './City'
+import historyStore from './History'
 
 const store = {
     userStore,
-    cityStore
+    historyStore
 }
 
 export default store

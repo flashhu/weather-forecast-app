@@ -1,0 +1,29 @@
+.topbar {
+    color: #333;
+    font-size: 18px;
+}
+
+.topbar span {
+    padding-right: 10px;
+}
+
+.editPage-wrapper {
+    width: 100%;
+    height: 100vh;
+    padding: 30px 20px;
+}
+
+.edit-box {
+    margin: auto;
+    background-color: rgba(255, 255, 255, .3);
+    width: 100%;
+    padding: 35px 30px 40px;
+}
+
+.edit-form {
+    margin: 0 auto;
+}
+
+.edit-btn {
+    width: 100%;
+}

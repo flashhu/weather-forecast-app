@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from 'mobx'
 
-class CityStore {
+class HistoryStore {
     constructor() {
         makeAutoObservable(this)
     }
@@ -10,4 +10,4 @@ class CityStore {
     
 }
 
-export default new CityStore()
+export default new HistoryStore()

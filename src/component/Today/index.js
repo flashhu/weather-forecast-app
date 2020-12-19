@@ -5,15 +5,16 @@ import { StockOutlined } from '@ant-design/icons'
 import { get } from '../../util/request'
 import { API_CITY_CODE, API_NOW, API_FORCAST, API_CITY_IMAGE } from '../../constant/urls'
 import { KEY, CLIENT_ID } from '../../constant/config'
-import { useCityStore } from '../../hooks/useStore'
+import { useUserStore } from '../../hooks/useStore'
 import './index.css'
 
 const { Search } = Input;
+const initImage = 'https://images.unsplash.com/photo-1573392116149-9655b831a5ed?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'
 
 function Today() {
-    const cityStore = useCityStore()
+    const userStore = useUserStore()
     const cityInput = useRef(null)
-    const [city, setCity] = useState(cityStore.currDefaultCity)
+    const [city, setCity] = useState(userStore.user ? userStore.user.default_city: '杭州')
     const [nowData, setNowData] = useState(null)
     const [forcastData, setForcastData] = useState([])
     const [cityView, setCityView] = useState('')
@@ -30,12 +31,12 @@ function Today() {
         const getNowWeather = async () => {
             const cityCode = await getCityCode();
             const weatherData = await get(API_NOW, { location: cityCode, key: KEY })
-            weatherData && setNowData(weatherData.now)
+            weatherData && weatherData.now && setNowData(weatherData.now)
         }
         const getForcastData = async () => {
             const cityCode = await getCityCode();
             const weatherData = await get(API_FORCAST, { location: cityCode, key: KEY })
-            weatherData && setForcastData(weatherData.daily)
+            weatherData && weatherData.daily && setForcastData(weatherData.daily)
         }
         const getCityImage = async () => {
             const params = {query: `建筑${city}`, client_id: CLIENT_ID}
@@ -50,13 +51,13 @@ function Today() {
     return (
         <div className="weather-today">
             <div className="city-view">
-                <img className="city-image" alt="city-view" src={cityView ? cityView.urls.small : 'https://unsplash.com/photos/3TG9vuGVl2s'} />
+                <img className="city-image" alt="city-view" src={cityView ? cityView.urls.small : initImage} />
                 <div className="image-source">
                     Photo by {cityView ? cityView.user.name: '...'} on Unsplash
                 </div>
             </div>
             <div className="top-bar">
-                <Search defaultValue={cityStore.currDefaultCity} ref={cityInput} onSearch={onSearch} enterButton />
+                <Search defaultValue={city} ref={cityInput} onSearch={onSearch} enterButton />
             </div>
             <div className="today">
                 <div className="t-weather">

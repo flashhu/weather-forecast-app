@@ -5,6 +5,7 @@ import zhCN from 'antd/es/locale/zh_CN';
 import App from './App';
 import store from './store'
 import 'antd/dist/antd.css';
+import './assets/global.css'
 
 ReactDOM.render(
   <Provider {...store}>

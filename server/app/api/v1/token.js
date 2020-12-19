@@ -15,9 +15,8 @@ const router = new Router({
  */
 router.post('/', async (ctx) => {
     const v = await new TokenValidator().validate(ctx)
-    console.log(v.get('body.name'), v.get('body.passwd'));
     const user = await verifyAccount({name: v.get('body.name'), passwd: v.get('body.passwd')}, 'name')
-    const token = user.auto_login ? generateToken(user.id, Auth.USER): ''
+    const token = generateToken(user.id, Auth.USER)
     const info = await getUserInfo(user.id)
     ctx.body = {
         token,

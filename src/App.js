@@ -9,6 +9,10 @@ const Map = lazy(() => import('./page/map'));
 const Setting = lazy(() => import('./page/setting'));
 const NotFound = lazy(() => import('./page/notFound'));
 
+const ModifyPwd = lazy(() => import('./page/setting/component/password'));
+const ModifyDefaultCity = lazy(() => import('./page/setting/component/defaultCity'));
+const ModifyDefaultDay = lazy(() => import('./page/setting/component/defaultDay'));
+
 const SuspenseWrapper = ({ children }) => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
@@ -29,7 +33,14 @@ function App() {
                 <Route path='/' exact component={Weather} />
                 <Route path='/map' exact component={Map} />
                 <Route path='/history' exact component={History} />
-                <Route path='/setting' exact component={Setting} />
+                <Route path='/setting' render={() => (
+                  <Switch>
+                    <Route path='/setting' exact component={Setting}/>
+                    <Route path='/setting/password' exact component={ModifyPwd} />
+                    <Route path='/setting/city' exact component={ModifyDefaultCity} />
+                    <Route path='/setting/day' exact component={ModifyDefaultDay} />
+                  </Switch>
+                )} />
                 <Route component={NotFound} />
               </Switch>
             </SuspenseWrapper>

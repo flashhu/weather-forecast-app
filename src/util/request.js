@@ -1,4 +1,5 @@
 import { extend } from 'umi-request';
+import { encode } from '../util/token';
 
 const errorHandler = error => {
     const { data = {} } = error;
@@ -13,7 +14,10 @@ const errorHandler = error => {
 }
 
 const request = extend({
-    timeout: 15000, // 如超时，则请求中断，抛出异常
+    headers: {
+        'Authorization': encode(window.localStorage.getItem('token'))
+    },
+    timeout: 10000, // 如超时，则请求中断，抛出异常
     errorHandler //错误处理
 });
 
@@ -24,10 +28,6 @@ export const get = (url = '', params = null) => {
             ...params
         }
     }).then(function (response) {
-        // if(!response.code) {
-        //     message.warn(response)
-        // }
-        // console.log('r', response);
         return response;
     }).catch(function (error) {
         errorHandler(error);
