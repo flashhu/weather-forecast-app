@@ -10,9 +10,4 @@ export function useUserStore() {
     return userStore
 }
 
-export function useHistoryStore() {
-    const { historyStore } = useStores();
-    return historyStore
-}
-
 export default useStores

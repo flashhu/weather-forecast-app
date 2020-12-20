@@ -13,20 +13,31 @@ const initImage = 'https://images.unsplash.com/photo-1573392116149-9655b831a5ed?
 
 function Today() {
     const userStore = useUserStore()
+    const willAutoLogin = !!window.localStorage.token && window.localStorage.autoLogin !== '0' && !userStore.user
+    // 不会执行登录操作，且尚未登录成功时，初始为杭州
+    const initCity = willAutoLogin ? '?' : userStore.currDefaultCity ? userStore.currDefaultCity : '杭州'
     const cityInput = useRef(null)
-    const [city, setCity] = useState(userStore.user ? userStore.user.default_city: '杭州')
+    const [city, setCity] = useState(initCity)
     const [nowData, setNowData] = useState(null)
     const [forcastData, setForcastData] = useState([])
     const [cityView, setCityView] = useState('')
+
+    console.log(willAutoLogin, city);
 
     const onSearch = (value) => {
         setCity(value);
     }
 
     useEffect(()=>{
+        if (userStore.currDefaultCity) {
+            setCity(userStore.currDefaultCity)
+        }
+    }, [userStore.currDefaultCity])
+
+    useEffect(()=>{
         const getCityCode = async () => {
             const cityData = await get(API_CITY_CODE, { location: city, key: KEY})
-            return cityData && cityData.location ? cityData.location[0].id : "101210101"
+            return cityData && cityData.location ? cityData.location[0].id : ""
         }
         const getNowWeather = async () => {
             const cityCode = await getCityCode();
@@ -46,6 +57,7 @@ function Today() {
         getNowWeather();
         getForcastData();
         getCityImage();
+        cityInput.current.state.value = ''
     }, [city])
 
     return (
@@ -57,9 +69,10 @@ function Today() {
                 </div>
             </div>
             <div className="top-bar">
-                <Search defaultValue={city} ref={cityInput} onSearch={onSearch} enterButton />
+                <Search ref={cityInput} onSearch={onSearch} enterButton />
             </div>
             <div className="today">
+                <div className="t-currCity">当前城市：{city}</div>
                 <div className="t-weather">
                     <p className="t-temp">{nowData ? nowData.temp: '?'}</p>
                 </div>

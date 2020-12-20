@@ -9,6 +9,7 @@ class UserStore {
     }
 
     user = null
+    currDefaultCity = ''
 
     async login(params) {
         const data = await post(API_USER_LOGIN, params);
@@ -17,6 +18,7 @@ class UserStore {
             window.localStorage.setItem('autoLogin', data.info.auto_login);
             runInAction(() => {
                 this.user = data.info;
+                this.currDefaultCity = data.info.default_city;
             })
             message.success('登录成功');
         }
@@ -27,6 +29,7 @@ class UserStore {
         if (data) {
             runInAction(() => {
                 this.user = data.info
+                this.currDefaultCity = data.info.default_city
             })
             message.success('登录成功');
         }
@@ -55,6 +58,7 @@ class UserStore {
                     case 'city':
                         this.user['default_city'] = params.cityName
                         this.user['default_city_code'] = params.cityCode
+                        this.currDefaultCity = params.cityName
                         break;
                     case 'day':
                         this.user['default_day'] = params.day
@@ -75,6 +79,7 @@ class UserStore {
     logout() {
         window.localStorage.removeItem('token');
         this.user = null;
+        this.currDefaultCity = ''
         message.success('登出成功');
     }
 }

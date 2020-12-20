@@ -16,6 +16,11 @@
     font-size: 25px;
 }
 
+.weather-today .t-currCity {
+    margin-top: 5px;
+    color: #777;
+}
+
 .weather-today .list-item {
     display: flex;
     justify-content: space-between;
