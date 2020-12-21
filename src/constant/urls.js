@@ -14,9 +14,11 @@ export const API_USER_SETTING = API_SERVER + '/user/setting';
 // export const API_NOW = '/apiWeather/weather/now';
 // export const API_CITY_CODE = '/apiCityCode/city/lookup';
 // export const API_FORCAST = '/apiWeather/weather/3d';
+// export const API_HISTORY = '/apiHistory/historical/weather';
 export const API_NOW = 'https://devapi.qweather.com/v7/weather/now';
 export const API_CITY_CODE = 'https://geoapi.qweather.com/v2/city/lookup';
 export const API_FORCAST = 'https://devapi.qweather.com/v7/weather/3d';
+export const API_HISTORY = 'https://api.qweather.com/v7/historical/weather';
 
 // 城市图片
 export const API_CITY_IMAGE = 'https://api.unsplash.com/search/photos';

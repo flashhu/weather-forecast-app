@@ -10,6 +10,7 @@ class UserStore {
 
     user = null
     currDefaultCity = ''
+    historyData = []
 
     async login(params) {
         const data = await post(API_USER_LOGIN, params);
@@ -74,6 +75,10 @@ class UserStore {
         } else {
             return false
         }
+    }
+
+    setHistoryData(data) {
+        this.historyData = data
     }
 
     logout() {

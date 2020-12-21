@@ -22,6 +22,16 @@
 //         })
 //     );
 //     app.use(
+//         '/apiHistory',
+//         createProxyMiddleware({
+//             target: 'https://api.qweather.com/v7',
+//             changeOrigin: true,
+//             pathRewrite: {
+//                 '^/apiHistory': '/'
+//             }
+//         })
+//     );
+//     app.use(
 //         '/apiPic',
 //         createProxyMiddleware({
 //             target: 'https://www.bing.com',
