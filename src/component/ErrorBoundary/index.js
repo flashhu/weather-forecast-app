@@ -1,4 +1,6 @@
 import { Component } from 'react';
+import errorImg from '../../assets/img/error.svg'
+import './index.css'
 
 class ErrorBoundary extends Component {
     constructor(props) {
@@ -21,7 +23,14 @@ class ErrorBoundary extends Component {
 
     render() {
         if (this.state.hasError) {
-            return <h1>Something went wrong.</h1>;
+            return (
+                <div className="error-tip">
+                    <div>
+                        <img alt="tip" src={errorImg} />
+                        <p style={{ textAlign: 'center' }}>应用服务出现错误，请检查网络或重启软件！</p>
+                    </div>
+                </div>
+            )
         }
         return this.props.children;
     }

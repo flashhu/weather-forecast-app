@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react'
-import { Input } from 'antd'
+import { Input, message } from 'antd'
 import { observer } from 'mobx-react'
-import { StockOutlined } from '@ant-design/icons'
+import { StockOutlined, FireOutlined } from '@ant-design/icons'
 import { get } from '../../util/request'
 import { API_CITY_CODE, API_NOW, API_FORCAST, API_CITY_IMAGE } from '../../constant/urls'
 import { KEY, CLIENT_ID } from '../../constant/config'
@@ -9,7 +9,41 @@ import { useUserStore } from '../../hooks/useStore'
 import './index.css'
 
 const { Search } = Input;
+
+const hotCity = [
+    { name: '北京', code: '101010100'}, 
+    { name: '上海', code: '101020100'}, 
+    { name: '深圳', code: '101280601'}
+]
 const initImage = 'https://images.unsplash.com/photo-1573392116149-9655b831a5ed?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'
+let prevCity = '';
+
+function HotCity() {
+    const [cityData, setCityData] = useState([])
+
+    useEffect(()=>{
+        (async () => {
+            for(let i = 0; i < hotCity.length; i ++) {
+                const data = await get(API_NOW, { location: hotCity[i].code, key: KEY })
+                if(data) {
+                    hotCity[i]['now'] = data.now
+                }
+            }
+            setCityData(hotCity)
+        })()
+    }, [])
+
+    return (
+        <>
+            {cityData.map((item, index) =>
+                item &&
+                <div className="list-item" key={`hot${index}`}>
+                    <div>{item.name}</div><div>{item.now.text} / {item.now.temp}℃</div>
+                </div>
+            )}
+        </>
+    )
+}
 
 function Today() {
     const userStore = useUserStore()
@@ -18,13 +52,14 @@ function Today() {
     const initCity = willAutoLogin ? '?' : userStore.currDefaultCity ? userStore.currDefaultCity : '杭州'
     const cityInput = useRef(null)
     const [city, setCity] = useState(initCity)
+    const [cityCode, setCityCode] = useState('?')
     const [nowData, setNowData] = useState(null)
     const [forcastData, setForcastData] = useState([])
     const [cityView, setCityView] = useState('')
 
-    console.log(willAutoLogin, city);
-
     const onSearch = (value) => {
+        prevCity = city;
+        console.log(prevCity);
         setCity(value);
     }
 
@@ -35,30 +70,39 @@ function Today() {
     }, [userStore.currDefaultCity])
 
     useEffect(()=>{
-        const getCityCode = async () => {
-            const cityData = await get(API_CITY_CODE, { location: city, key: KEY})
-            return cityData && cityData.location ? cityData.location[0].id : ""
-        }
-        const getNowWeather = async () => {
-            const cityCode = await getCityCode();
+        (async () => {
+            const cityData = await get(API_CITY_CODE, { location: city, key: KEY })
+            if (cityData && cityData.code === '200') {
+                const code = cityData.location ? cityData.location[0].id : ""
+                code !== cityCode && setCityCode(code)
+            }
+            if (cityData && cityData.code === '404' && city !== '?') {
+                message.error('当前查询城市不存在');
+                setCity(prevCity)
+                cityInput.current.state.value = ''
+            }
+        })()
+    }, [city])
+
+    useEffect(()=>{
+        // 当前天气
+        (async () => {
             const weatherData = await get(API_NOW, { location: cityCode, key: KEY })
             weatherData && weatherData.now && setNowData(weatherData.now)
-        }
-        const getForcastData = async () => {
-            const cityCode = await getCityCode();
+        })();
+        // 未来三天天气（带今天）
+        (async () => {
             const weatherData = await get(API_FORCAST, { location: cityCode, key: KEY })
             weatherData && weatherData.daily && setForcastData(weatherData.daily)
-        }
-        const getCityImage = async () => {
+        })();
+        // 当前城市图片
+        (async () => {
             const params = {query: `建筑${city}`, client_id: CLIENT_ID}
             const cityImage = await get(API_CITY_IMAGE, params)
             cityImage && setCityView(cityImage.results[0])
-        }
-        getNowWeather();
-        getForcastData();
-        getCityImage();
+        })();
         cityInput.current.state.value = ''
-    }, [city])
+    }, [cityCode])
 
     return (
         <div className="weather-today">
@@ -113,6 +157,10 @@ function Today() {
                         <div>{`${item.windDirDay}${item.windScaleDay}级`}</div>
                     </div>
                 )}
+            </div>
+            <div className="list-wrapper">
+                <div className="forcast-title"><FireOutlined />热门</div>
+                <HotCity />
             </div>
         </div>
     )

@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { Collapse } from 'antd'
 import { observer } from 'mobx-react'
-import { VictoryChart, VictoryGroup, VictoryTooltip, VictoryLine, VictoryScatter, VictoryVoronoiContainer, VictoryAxis } from 'victory';
+import { VictoryChart, VictoryGroup, VictoryTooltip, VictoryLine, VictoryScatter } from 'victory';
 import { get } from '../../util/request'
 import { API_HISTORY } from '../../constant/urls'
 import { useUserStore } from '../../hooks/useStore'
@@ -51,6 +51,7 @@ function History() {
             <Collapse defaultActiveKey={['0']} accordion>
                 {userStore.historyData.map((item, index) =>
                     <Panel header={item.date} key={index}>
+                        {item.daily && 
                         <div className="daily-info">
                             <div className="info-item">
                                 <div>当天最高温度</div><div>{item.daily.tempMax}℃</div>
@@ -61,7 +62,8 @@ function History() {
                             <div className="info-item">
                                 <div>当天降水量</div><div>{item.daily.precip}㎜</div>
                             </div>
-                        </div>
+                        </div>}
+                        {!!item.hourly.length &&
                         <VictoryChart>    
                             <VictoryGroup
                                 color="#1890ff"
@@ -77,7 +79,7 @@ function History() {
                                 <VictoryLine />
                                 <VictoryScatter size={3} />
                             </VictoryGroup>
-                        </VictoryChart>
+                        </VictoryChart>}
                     </Panel>
                 )}
             </Collapse>

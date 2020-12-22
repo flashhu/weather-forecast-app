@@ -1,0 +1,12 @@
+.error-tip {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: calc(100vh - 60px);
+    color: #777;
+}
+
+.error-tip p {
+    margin-top: 10px;
+}

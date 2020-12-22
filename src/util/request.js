@@ -1,4 +1,5 @@
 import { extend } from 'umi-request';
+import { message } from 'antd';
 import { encode } from '../util/token';
 
 const errorHandler = error => {
@@ -11,6 +12,7 @@ const errorHandler = error => {
         msg = data.msg;
     }
     console.log(data);
+    message.error(msg)
 }
 
 const request = extend({

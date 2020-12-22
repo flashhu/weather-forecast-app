@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { observer } from 'mobx-react'
+import ErrorBoundary from '../../component/ErrorBoundary'
 import { useUserStore } from '../../hooks/useStore'
 import './index.css'
 
@@ -12,6 +13,16 @@ function Map() {
             zoom: 11 //初始化地图层级
         })
 
+        AMap.plugin([
+            'AMap.ToolBar',
+        ], function () {
+            // 在图面添加工具条控件，工具条控件集成了缩放、平移、定位等功能按钮在内的组合控件
+            map.addControl(new AMap.ToolBar({
+                // 简易缩放模式，默认为 false
+                liteStyle: true
+            }));
+        });
+
         map.setCity(userStore.user ? userStore.user.default_city : '杭州');
         
         return ()=>{
@@ -21,7 +32,9 @@ function Map() {
 
     return (
         <div className="map">
-            <div id="container"></div> 
+            <ErrorBoundary>
+                <div id="container"></div> 
+            </ErrorBoundary>
         </div>
     )
 }
